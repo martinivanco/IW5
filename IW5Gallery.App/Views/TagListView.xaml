@@ -1,0 +1,107 @@
+﻿<UserControl x:Class="IW5Gallery.App.Views.TagListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:IW5Gallery.App.Views"
+             xmlns:viewModels="clr-namespace:IW5Gallery.App.ViewModels"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             DataContext="{Binding TagListViewModel, Source={StaticResource ViewModelLocator}}"
+             d:DataContext="{d:DesignInstance viewModels:TagListViewModel}">
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding OnLoadCommand}"/>
+        </i:EventTrigger>
+        <i:EventTrigger EventName="Unloaded">
+            <i:InvokeCommandAction Command="{Binding OnUnloadCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBox Grid.Column="0" x:Name="SearchBox"/>
+            <Button Grid.Column="1" Content="Search" Command="{Binding SearchCommand}"
+                    CommandParameter="{Binding ElementName=SearchBox}"/>
+        </Grid>
+
+        <Label Grid.Row="1" Content="People" FontSize="20" Margin="2,2,2,5"/>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBox Grid.Column="0" x:Name="PersonName"/>
+            <Button Grid.Column="1" Content="Add Person" Command="{Binding AddPersonCommand}"
+                    CommandParameter="{Binding ElementName=PersonName}"/>
+        </Grid>
+        <ListBox Grid.Row="3" x:Name="PersonsListBox" ItemsSource="{Binding Persons}">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectionChanged">
+                    <i:InvokeCommandAction Command="{Binding SelectPersonCommand}"
+                                           CommandParameter="{Binding ElementName=PersonsListBox, Path=SelectedItem}"/>
+                </i:EventTrigger>
+                <i:EventTrigger EventName="GotFocus">
+                    <i:InvokeCommandAction Command="{Binding SelectPersonCommand}"
+                                           CommandParameter="{Binding ElementName=PersonsListBox, Path=SelectedItem}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Name}" Margin="5"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <Separator Grid.Row="4" Margin="5"/>
+
+        <Label Grid.Row="5" Content="Things" FontSize="20" Margin="2,2,2,4"/>
+        <Grid Grid.Row="6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBox Grid.Column="0" x:Name="ThingName"/>
+            <Button Grid.Column="1" Content="Add Thing" Command="{Binding AddThingCommand}"
+                    CommandParameter="{Binding ElementName=ThingName}"/>
+        </Grid>
+        <ListBox Grid.Row="7" x:Name="ThingsListBox" ItemsSource="{Binding Things}">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectionChanged">
+                    <i:InvokeCommandAction Command="{Binding SelectThingCommand}"
+                                           CommandParameter="{Binding ElementName=ThingsListBox, Path=SelectedItem}"/>
+                </i:EventTrigger>
+                <i:EventTrigger EventName="GotFocus">
+                    <i:InvokeCommandAction Command="{Binding SelectThingCommand}"
+                                           CommandParameter="{Binding ElementName=ThingsListBox, Path=SelectedItem}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Name}" Margin="5"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</UserControl>
